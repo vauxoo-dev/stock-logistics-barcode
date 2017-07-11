@@ -20,12 +20,16 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view" />
             <field name="arch" type="xml">
+                <field name="ean13" position="before">
+                    <field name="check_barcode"/>
+                    <field name="normalized_barcode"/>
+                </field>
                 <field name="ean13" position="after">
                     <field name="ean_sequence_id" domain="[('barcode_sequence', '=', 1)]"
-                        attrs="{'invisible': [('ean13', '!=', False)]}"
+                        attrs="{'invisible': [('ean13', '!=', False), ('normalized_barcode', '=', True)]}"
                         context="{'default_name': name and 'EAN ' + name or 'EAN', 'default_barcode_sequence': 1}" />
                     <button string="Generate the EAN13" name="generate_ean13"
-                        attrs="{'invisible': [('ean13', '!=', False)]}"
+                        attrs="{'invisible': [('ean13', '!=', False), ('normalized_barcode', '=', True)]}"
                         type="object" colspan="2" />
                 </field>
             </field>

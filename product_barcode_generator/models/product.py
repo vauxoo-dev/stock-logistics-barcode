@@ -37,6 +37,17 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     ean13 = fields.Char(copy=False)
+    check_barcode = fields.Boolean(default=True,
+                                   string="Check Barcode",
+                                   help="If you want ignore the EAN13 check "
+                                        "set to True left False "
+                                        "otherwise")
+    normalized_barcode = fields.Boolean(default=True,
+                                        string="Normalized",
+                                        help="The supplier will provide a "
+                                             "proper barcode if True if not "
+                                             "then you can generate your own "
+                                             "barcode")
     ean_sequence_id = fields.Many2one('ir.sequence', string='Ean sequence')
 
     @api.model
@@ -87,9 +98,18 @@ class ProductProduct(models.Model):
 
     @api.one
     def generate_ean13(self):
+        if self.normalized_barcode:
+            return True
         if not self.ean13:
             ean13 = self._generate_ean13_value(self)
             if ean13:
                 self.write({'ean13': ean13})
 
         return True
+
+    @api.multi
+    def _check_ean_key(self):
+        self.ensure_one()
+        if not self.check_barcode:
+            return True
+        return super(ProductProduct, self)._check_ean_key(self)
