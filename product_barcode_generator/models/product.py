@@ -112,4 +112,9 @@ class ProductProduct(models.Model):
         self.ensure_one()
         if not self.check_barcode:
             return True
-        return super(ProductProduct, self)._check_ean_key(self)
+        return super(ProductProduct, self)._check_ean_key()
+
+    _constraints = [(_check_ean_key,
+                     'You provided an invalid "EAN13 Barcode" reference.'
+                     ' You may use the "Internal Reference" field instead.',
+                     ['ean13'])]
