@@ -40,7 +40,7 @@ class TestEanOnProduct(common.TransactionCase):
         self.assertFalse(bool(self.product_demo.ean13))
 
     def test_generate_ean_sequence_on_product_with_sequence(self):
-        self.product_demo.write({'ean13': False,
+        self.product_demo.write({'ean13': False, 'normalized_barcode': False,
                                  'ean_sequence_id': self.sequence1.id})
         self.product_demo.generate_ean13()
         self.assertTrue(bool(self.product_demo.ean13))
