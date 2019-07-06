@@ -149,9 +149,9 @@ class ScannerHardware(models.Model):
         required=True,
         default='red',
         help='Color for the error background.')
-    tmp_values = fields.Serialized(
-        readonly=True
-    )
+    # tmp_values = fields.Serialized(
+    #     readonly=True
+    # )
     tmp_values_display = fields.Html(
         compute='_compute_tmp_values_display',
         help="Debug tmp values",
